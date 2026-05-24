@@ -19,7 +19,7 @@ while True:
         if resultado != '':
             inputs.confirmar()
                 
-            if inputs.continuar() == True:
+            if inputs.continuar():
                 jogadorO = jogadorX = 0
                 malha = [['*', '*', '*'],
                          ['*', '*', '*'],
@@ -38,7 +38,7 @@ while True:
     if len(pos) == 1 and pos in 'abcdefghi':
         sucesso = core.registro_jogada(jogador, pos, malha)
 
-        if sucesso == False:
+        if not sucesso:
             inputs.confirmar()
             continue
         else:
