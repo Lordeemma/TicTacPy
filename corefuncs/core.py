@@ -1,22 +1,16 @@
-def registro_jogada(jogador, posicao, lista):
-    espacos = [['a', 'b', 'c'],
-               ['d', 'e', 'f'],
-               ['g', 'h', 'i']]
+def registro_jogada(jogador, posicao, tabuleiro):
+    espacos = 'abcdefghi'
 
-    for y in range(len(lista)):
-        for x in range(len(lista)):
+    index = espacos.index(posicao)
+    y, x = divmod(index, 3)
 
-            if posicao == espacos[y][x]:
-
-                if lista[y][x] == '*':
-                    lista[y][x] = jogador
-                    print('Jogada registrada.')
-                    return True
-                else:
-                    print('Campo já preenchido!')
-                    return False
-
-    return False
+    if tabuleiro[y][x] == '*':
+        tabuleiro[y][x] = jogador
+        print('Jogada registrada.')
+        return True
+    else:
+        print('Campo já preenchido!')
+        return False
 
 def escolher_jogador_inicio():
     from random import choice as escolha
@@ -27,59 +21,41 @@ def escolher_jogador_inicio():
 
     return resultado
 
-def verifica_vencedor(jogadorO, jogadorX, lista):
-    comb = ''
-    vitoria = ''
+def verifica_vencedor(tabuleiro):
+    linhas = []
 
-    for y in range(len(lista)):
-        if (comb == 'XXX') or (comb == 'OOO'):
-            vitoria = comb
-            break
-        else:
-            comb = ''
+    linhas.extend(tabuleiro)
 
-            for x in range(len(lista)):
-                comb += lista[y][x]
-        
-    for x in range(len(lista)):
-        if (comb == 'XXX') or (comb == 'OOO'):
-            vitoria = comb
-            break
-        else:
-            comb = ''
-            
-            for y in range(len(lista)):
-                comb += lista[y][x]
-    
-    if (comb == 'XXX') or (comb == 'OOO'):
-        vitoria = comb
-    else:
-        comb = ''
-        
-    comb += lista[0][0]
-    comb += lista[1][1]
-    comb += lista[2][2]
+    for col in range(3):
+        linhas.append([
+            tabuleiro[0][col],
+            tabuleiro[1][col],
+            tabuleiro[2][col]
+        ])
 
-    if (comb == 'XXX') or (comb == 'OOO'):
-        vitoria = comb
-    else:
-        comb = ''
+    linhas.append([
+        tabuleiro[0][0],
+        tabuleiro[1][1],
+        tabuleiro[2][2]
+    ])
 
-    comb += lista[0][2]
-    comb += lista[1][1]
-    comb += lista[2][0]
+    linhas.append([
+        tabuleiro[0][2],
+        tabuleiro[1][1],
+        tabuleiro[2][0]
+    ])
 
-    if (comb == 'XXX') or (comb == 'OOO'):
-        vitoria = comb
-    else:
-        comb = ''
-    
-    if vitoria == 'XXX':
-        print('Jogador X é o vencedor!')
-    elif vitoria == 'OOO':
-        print('Jogador O é o vencedor!')
-    elif vitoria == '' and (jogadorO == 5 and jogadorX == 4) or (jogadorO == 4 and jogadorX == 5):
+    for linha in linhas:
+        if linha == ['X', 'X', 'X']:
+            print('Jogador X é o vencedor!')
+            return 'X'
+
+        if linha == ['O', 'O', 'O']:
+            print('Jogador O é o vencedor!')
+            return 'O'
+
+    if all(campo != '*' for linha in tabuleiro for campo in linha):
         print('EMPATE!')
         return 'empate'
 
-    return vitoria
+    return None

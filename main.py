@@ -14,9 +14,9 @@ while True:
         screens.limpa_tela()
         screens.criar_tabuleiro(malha)
 
-        resultado = core.verifica_vencedor(jogadorO, jogadorX, malha)
+        resultado = core.verifica_vencedor(malha)
 
-        if resultado != '':
+        if resultado != None:
             inputs.confirmar()
                 
             if inputs.continuar():
